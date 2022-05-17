@@ -13,7 +13,7 @@ git config --global user.email you@example.com
 git config --global init.defaultBranch
 ```
 
----
+
 
 # Branches 
 
@@ -28,7 +28,6 @@ git branch -m main
 git branch -vv
 ```
 
----
 
 # Remote
 > [Remote Branches](https://git-scm.com/book/it/v2/Git-Branching-Remote-Branches)
@@ -53,6 +52,30 @@ git remote add origin git@github.com:<repository/name.git>
 ```bash
 git branch -u origin/<branch-name>
 ```
+
+# Undo local changes
+> [Stackoverflow](https://stackoverflow.com/a/21697484)
+> [Reverting changes in Git](https://www.szakmeister.net/blog/2011/oct/12/reverting-changes-git/) (old)
+
+Discard all local changes (regardless of staged or not)
+```bash
+git reset --hard HEAD
+```
+
+Set your working copy to specific commit but don't lose intermediate commits
+```bash
+git checkout <commit> -- .
+```
+>  You'll need to commit to record the fact that you wanted to go back
+
+
+Set your working copy to a specific commit and discard intermediate commits
+```bash
+git reset --hard <commit>
+```
+
+
+
 
 ---
 

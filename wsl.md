@@ -70,3 +70,16 @@ cd /mnt
 # switch to the Drive you want to navigate
 cd c
 ```
+
+# Configure PHP
+Should be in `/usr/lib/php/X.X/`
+Copy php.ini-production to php.ini and change needed settings (usually uncomment extensions)
+```bash
+cd /usr/lib/php/X.X/
+
+# copy to usable .ini
+sudo cp php.ini-production php.ini
+
+# edit ini
+sudo nano php.ini
+```

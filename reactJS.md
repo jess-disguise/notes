@@ -93,31 +93,6 @@ return React.createElement('div', {className: 'shopping-list'},
 
 > https://reactjs.org/docs/react-api.html#createelement
 
-## JSX
-A syntax extension to JavaScript that produces React “elements” to render to the DOM
-
-- describe what the UI should look like
-- comes with the full power of JavaScript
-- put any JavaScript expressions within braces inside JSX
-- each React element is a JavaScript object that you can store in a variable or pass around in your program.
-- `camelCase` property naming; `class` becomes `className` in JSX
-
-We can now refer to the whole shopping list by writing `<ShoppingList />`. Each React component is encapsulated and can operate independently; this allows you to build complex UIs from simple components
-
-If a tag is empty, you may close it immediately with `/>`, like XML:
-```jsx
-const element = <img src={user.avatarUrl} />;
-```
-
-### XSS
-It is safe to embed user input in JSX:
-```jsx
-const title = response.potentiallyMaliciousInput;
-// This is safe:
-const element = <h1>{title}</h1>;
-```
-> By default, React DOM escapes any values embedded in JSX before rendering them. Everything is converted to a string before being rendered. This helps prevent XSS (cross-site-scripting) attacks.
-
 ## Function Components
 
 Simpler way to write components that only contain a render method and don't have their own state.
@@ -171,6 +146,135 @@ function Square(props) {
     );
 }
 ```
+
+
+# JSX
+A syntax extension to JavaScript that produces React “elements” to render to the DOM
+
+- describe what the UI should look like
+- comes with the full power of JavaScript
+- put any JavaScript expressions within braces inside JSX
+- each React element is a JavaScript object that you can store in a variable or pass around in your program.
+- `camelCase` property naming; `class` becomes `className` in JSX
+
+We can now refer to the whole shopping list by writing `<ShoppingList />`. Each React component is encapsulated and can operate independently; this allows you to build complex UIs from simple components
+
+If a tag is empty, you may close it immediately with `/>`, like XML:
+```jsx
+const element = <img src={user.avatarUrl} />;
+```
+
+## XSS
+It is safe to embed user input in JSX:
+```jsx
+const title = response.potentiallyMaliciousInput;
+// This is safe:
+const element = <h1>{title}</h1>;
+```
+> By default, React DOM escapes any values embedded in JSX before rendering them. Everything is converted to a string before being rendered. This helps prevent XSS (cross-site-scripting) attacks.
+
+## Fragments
+> https://reactjs.org/docs/fragments.html
+
+Avoid unnecessary wrapper HTML with React Fragments
+
+```jsx
+import React from 'react';
+
+class Table extends React.Component {
+  render() {
+    return (
+      <table>
+        <tr>
+          <Columns />
+        </tr>
+      </table>
+    );
+  }
+}
+```
+
+### Bad
+```jsx
+// WRONG
+class Columns extends React.Component {
+  render() {
+    return (
+      // useless div element
+      <div>
+        <td>Hello</td>
+        <td>World</td>
+      </div>
+    );
+  }
+}
+```
+
+### Good
+Avoid unnecessary wrapper HTML
+```jsx
+// Good
+class Columns extends React.Component {
+  render() {
+    return (
+      <React.Fragment>        
+        <td>Hello</td>
+        <td>World</td>
+      </React.Fragment>    
+    );
+  }
+}
+```
+```jsx
+// Also Good, just import Fragment first
+import React, { Fragment } from 'react';
+
+class Columns extends React.Component {
+  render() {
+    return (
+      <Fragment>        
+        <td>Hello</td>
+        <td>World</td>
+      </Fragment>    
+    );
+  }
+}
+```
+
+Empty tag to indicate a fragment works too
+```jsx
+class Columns extends React.Component {
+  render() {
+    return (
+      <>        
+        <td>Hello</td>
+        <td>World</td>
+      </>    
+    );
+  }
+}
+```
+
+### Keyed Fragments
+```jsx
+function Glossary(props) {
+  return (
+    <dl>
+      {props.items.map(item => (
+        // Without the `key`, React will fire a key warning
+        <React.Fragment key={item.id}>
+          <dt>{item.term}</dt>
+          <dd>{item.description}</dd>
+        </React.Fragment>
+      ))}
+    </dl>
+  );
+}
+```
+
+
+---
+
 
 # State
 

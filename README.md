@@ -7,6 +7,7 @@ For the mental-RAM impaired
 https://devdocs.io/
 - [React](https://devdocs.io/react/)
 - [WebRTC](https://devdocs.io/dom/webrtc_api)
+- [WebGL](https://devdocs.io/dom/webgl_api)
 - [Socket.IO](https://devdocs.io/socketio~4/)
 - [Node](https://devdocs.io/node/)
 - [Laravel (8)](https://devdocs.io/laravel~8/)

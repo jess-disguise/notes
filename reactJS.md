@@ -36,6 +36,7 @@ npm start
 ```
 
 ## For Production
+
 ```bash
 # to run config for production deployment
 npm run eject
@@ -46,9 +47,9 @@ npm run build
 
 # Naming Conventions
 
-- use `on[Event]` names for Component props which represent events 
+- use `on[Event]` names for Component props which represent events
 - use `handle[Event]` for methods which handle the events (HTML attribute names should stay the same.)
-- 
+-
 
 # Components
 
@@ -58,6 +59,7 @@ npm run build
 - takes in parameters, called `props`, and returns a hierarchy of views to display via the `render` method.
 
 `ShoppingList` is a React component class/React component type:
+
 ```js
 class ShoppingList extends React.Component {
     /**
@@ -82,8 +84,9 @@ class ShoppingList extends React.Component {
 
 // Example usage: <ShoppingList name="Mark" />
 ```
-   
+
 The example above is equivalent to:
+
 ```js
 return React.createElement('div', {className: 'shopping-list'},
     React.createElement('h1', /* ... h1 children ... */),
@@ -147,8 +150,8 @@ function Square(props) {
 }
 ```
 
-
 # JSX
+
 A syntax extension to JavaScript that produces React “elements” to render to the DOM
 
 - describe what the UI should look like
@@ -157,23 +160,30 @@ A syntax extension to JavaScript that produces React “elements” to render to
 - each React element is a JavaScript object that you can store in a variable or pass around in your program.
 - `camelCase` property naming; `class` becomes `className` in JSX
 
-We can now refer to the whole shopping list by writing `<ShoppingList />`. Each React component is encapsulated and can operate independently; this allows you to build complex UIs from simple components
+We can now refer to the whole shopping list by writing `<ShoppingList />`. Each React component is encapsulated and can
+operate independently; this allows you to build complex UIs from simple components
 
 If a tag is empty, you may close it immediately with `/>`, like XML:
+
 ```jsx
-const element = <img src={user.avatarUrl} />;
+const element = <img src={user.avatarUrl}/>;
 ```
 
 ## XSS
+
 It is safe to embed user input in JSX:
+
 ```jsx
 const title = response.potentiallyMaliciousInput;
 // This is safe:
 const element = <h1>{title}</h1>;
 ```
-> By default, React DOM escapes any values embedded in JSX before rendering them. Everything is converted to a string before being rendered. This helps prevent XSS (cross-site-scripting) attacks.
+
+> By default, React DOM escapes any values embedded in JSX before rendering them. Everything is converted to a string
+> before being rendered. This helps prevent XSS (cross-site-scripting) attacks.
 
 ## Fragments
+
 > https://reactjs.org/docs/fragments.html
 
 Avoid unnecessary wrapper HTML with React Fragments
@@ -182,99 +192,223 @@ Avoid unnecessary wrapper HTML with React Fragments
 import React from 'react';
 
 class Table extends React.Component {
-  render() {
-    return (
-      <table>
-        <tr>
-          <Columns />
-        </tr>
-      </table>
-    );
-  }
+    render() {
+        return (
+            <table>
+                <tr>
+                    <Columns/>
+                </tr>
+            </table>
+        );
+    }
 }
 ```
 
 ### Bad
+
 ```jsx
 // WRONG
 class Columns extends React.Component {
-  render() {
-    return (
-      // useless div element
-      <div>
-        <td>Hello</td>
-        <td>World</td>
-      </div>
-    );
-  }
+    render() {
+        return (
+            // useless div element
+            <div>
+                <td>Hello</td>
+                <td>World</td>
+            </div>
+        );
+    }
 }
 ```
 
 ### Good
+
 Avoid unnecessary wrapper HTML
+
 ```jsx
 // Good
 class Columns extends React.Component {
-  render() {
-    return (
-      <React.Fragment>        
-        <td>Hello</td>
-        <td>World</td>
-      </React.Fragment>    
-    );
-  }
+    render() {
+        return (
+            <React.Fragment>
+                <td>Hello</td>
+                <td>World</td>
+            </React.Fragment>
+        );
+    }
 }
 ```
+
+`<Fragment>` is also Good, just import `Fragment` first
+
 ```jsx
-// Also Good, just import Fragment first
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 
 class Columns extends React.Component {
-  render() {
-    return (
-      <Fragment>        
-        <td>Hello</td>
-        <td>World</td>
-      </Fragment>    
-    );
-  }
+    render() {
+        return (
+            <Fragment>
+                <td>Hello</td>
+                <td>World</td>
+            </Fragment>
+        );
+    }
 }
 ```
 
 Empty tag to indicate a fragment works too
+
 ```jsx
 class Columns extends React.Component {
-  render() {
-    return (
-      <>        
-        <td>Hello</td>
-        <td>World</td>
-      </>    
-    );
-  }
+    render() {
+        return (
+            <>
+                <td>Hello</td>
+                <td>World</td>
+            </>
+        );
+    }
 }
 ```
 
 ### Keyed Fragments
+
 ```jsx
 function Glossary(props) {
-  return (
-    <dl>
-      {props.items.map(item => (
-        // Without the `key`, React will fire a key warning
-        <React.Fragment key={item.id}>
-          <dt>{item.term}</dt>
-          <dd>{item.description}</dd>
-        </React.Fragment>
-      ))}
-    </dl>
-  );
+    return (
+        <dl>
+            {props.items.map(item => (
+                // Without the `key`, React will fire a key warning
+                <React.Fragment key={item.id}>
+                    <dt>{item.term}</dt>
+                    <dd>{item.description}</dd>
+                </React.Fragment>
+            ))}
+        </dl>
+    );
 }
 ```
 
-
 ---
 
+# Portals
+
+> https://reactjs.org/docs/portals.html
+
+`ReactDOM.createPortal(child, container)`
+
+- A way to render children into a DOM node that exists outside the DOM hierarchy of the parent component
+    - For example, modals, pop-ups, and other overlays
+- Behaves like a normal React child
+    - The portal still exists in the React tree regardless of position in the DOM tree
+- [Managing keyboard focus](https://reactjs.org/docs/accessibility.html#programmatically-managing-focus) becomes very
+  important
+- Don't forget accessibility: https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal
+
+```jsx
+render()
+{
+    // React does *not* create a new div. It renders the children into `domNode`.
+    // `domNode` is any valid DOM node, regardless of its location in the DOM.
+    return ReactDOM.createPortal(
+        this.props.children,
+        domNode);
+}
+```
+
+An event fired from inside a portal will propagate to ancestors in the containing React tree, even if those elements are
+not ancestors in the DOM tree
+
+For example:
+
+```html
+
+<html>
+<body>
+<div id="app-root"></div>
+<div id="modal-root"></div>
+</body>
+</html>
+```
+
+A Parent component in `#app-root` would be able to catch an uncaught, bubbling event from the sibling node `#modal-root`
+
+```jsx
+// These two containers are siblings in the DOM
+const appRoot = document.getElementById('app-root');
+const modalRoot = document.getElementById('modal-root');
+
+class Modal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.el = document.createElement('div');
+    }
+
+    componentDidMount() {
+        /* The portal element is inserted in the DOM tree after
+        the Modal's children are mounted, meaning that children
+        will be mounted on a detached DOM node. If a child
+        component requires to be attached to the DOM tree
+        immediately when mounted, for example to measure a
+        DOM node, or uses 'autoFocus' in a descendant, add
+        state to Modal and only render the children when Modal
+        is inserted in the DOM tree. */
+        modalRoot.appendChild(this.el);
+    }
+
+    componentWillUnmount() {
+        modalRoot.removeChild(this.el);
+    }
+
+    render() {
+        return ReactDOM.createPortal(this.props.children, this.el);
+    }
+}
+
+class Parent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {clicks: 0};
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        // This will fire when the button in Child is clicked,    
+        // updating Parent's state, even though button    
+        // is not direct descendant in the DOM.    
+        this.setState(state => ({clicks: state.clicks + 1}));
+    }
+
+    render() {
+        return (
+            <div onClick={this.handleClick}>
+                <p>Number of clicks: {this.state.clicks}</p>
+                <p>
+                    Open up the browser DevTools
+                    to observe that the button
+                    is not a child of the div
+                    with the onClick handler.
+                </p>
+                <Modal> <Child/> </Modal></div>
+        );
+    }
+}
+
+function Child() {
+    // The click event on this button will bubble up to parent,  
+    // because there is no 'onClick' attribute defined  
+    return (
+        <div className="modal">
+            <button>Click</button>
+        </div>
+    );
+}
+
+const root = ReactDOM.createRoot(appRoot);
+root.render(<Parent/>);
+```
+
+---
 
 # State
 
@@ -404,16 +538,19 @@ var newPlayer = Object.assign({}, player, {score: 2});
 - There are built-in hooks and you can write your own
 
 ## Hook Rules
+
 > https://reactjs.org/docs/hooks-rules.html
 
-- Only call Hooks at the **top level** 
-  - Don't call Hooks inside loops, conditions, or nested functions.
-- Only call Hooks **from React function components** 
-  - Don't call Hooks from regular JavaScript functions. 
-  - You can call Hooks from your own custom Hooks
+- Only call Hooks at the **top level**
+    - Don't call Hooks inside loops, conditions, or nested functions.
+- Only call Hooks **from React function components**
+    - Don't call Hooks from regular JavaScript functions.
+    - You can call Hooks from your own custom Hooks
+
 > Plugin to enforce these rules for you: `npm install eslint-plugin-react-hooks --save-dev`
 
 ## State Hook -- `useState`
+
 > https://reactjs.org/docs/hooks-state.html
 
 `useState` returns a pair: the **current state value** and **a function** that lets you update it. React will preserve
@@ -455,7 +592,9 @@ function Example() {
 ```
 
 ## Effect Hook -- `useEffect`
+
 > https://reactjs.org/docs/hooks-effect.html
+
 - Lets you perform side effects in function components:
     - data fetching
     - setting up a subscription
@@ -504,6 +643,7 @@ function Example() {
 #### Example (Class)
 
 Updates the document title right after React makes changes to the DOM:
+
 ```jsx
 class Example extends React.Component {
     constructor(props) {
@@ -535,7 +675,9 @@ class Example extends React.Component {
 ```
 
 ##### Example (Hook)
+
 Updates the document title right after React makes changes to the DOM:
+
 ```jsx
 import React, {useState, useEffect} from 'react';
 
@@ -546,7 +688,7 @@ function Example() {
     useEffect(() => {
         document.title = `You clicked ${count} times`;
     });
-    
+
     return (
         <div>
             <p>You clicked {count} times</p>
@@ -563,15 +705,18 @@ function Example() {
 - Set up a subscription to some external data source
 - It is important to clean up so that we don't introduce a memory leak
 - Cleanup runs when:
-  - the component unmounts
-  - before running the effects next time
-    - [how to opt out of this](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects) 
+    - the component unmounts
+    - before running the effects next time
+        - [how to opt out of this](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects)
 
 #### Example (Class)
+
 A `ChatAPI` module that lets us subscribe to a friend's online status
 
 #### Example (Hook)
+
 A `ChatAPI` module that lets us subscribe to a friend's online status
+
 ```jsx
 import React, {useState, useEffect} from 'react';
 
@@ -600,47 +745,52 @@ function FriendStatus(props) {
 ```
 
 ## Ref Hook -- `useRef`
+
 > https://reactjs.org/docs/hooks-reference.html#useref
 
 Like a “box” that can hold a mutable value in its `.current` property.
- 
+
 - Returns a mutable `ref` object whose `.current` property is initialized to the passed argument (`initialValue`)
-- `useRef` **doesn't notify you when its content changes**. 
-  - Mutating the `.current` property doesn't trigger a re-render
+- `useRef` **doesn't notify you when its content changes**.
+    - Mutating the `.current` property doesn't trigger a re-render
 - The returned object will persist for the full lifetime of the component
 - A common use case is to access a child imperatively
 - Good for keeping any mutable value around similar to how you'd use instance fields in classes
 - Creates a plain JavaScript object
-  - The only difference between `useRef()` and creating a `{current: ...}` object is that `useRef` will give you the same ref object on every render
+    - The only difference between `useRef()` and creating a `{current: ...}` object is that `useRef` will give you the
+      same ref object on every render
 
-> Refs are primarily used as a way to access the DOM. If you pass a ref object to React with `<div ref={myRef} />`, React will set its `.current` property to the corresponding DOM node whenever that node changes
+> Refs are primarily used as a way to access the DOM. If you pass a ref object to React with `<div ref={myRef} />`,
+> React will set its `.current` property to the corresponding DOM node whenever that node changes
 
 A common use case is to access a child imperatively:
+
 ```jsx
 function TextInputWithFocusButton() {
-  const inputEl = useRef(null);
-  const onButtonClick = () => {
-    // `current` points to the mounted text input element
-    inputEl.current.focus();
-  };
-  return (
-    <>
-      <input ref={inputEl} type="text" />
-      <button onClick={onButtonClick}>Focus the input</button>
-    </>
-  );
+    const inputEl = useRef(null);
+    const onButtonClick = () => {
+        // `current` points to the mounted text input element
+        inputEl.current.focus();
+    };
+    return (
+        <>
+            <input ref={inputEl} type="text"/>
+            <button onClick={onButtonClick}>Focus the input</button>
+        </>
+    );
 ```
 
-# Lifecycle 
+# Lifecycle
 
 [Lifecycle Diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
 
 ## Common
+
 ![Screenshot_10](https://user-images.githubusercontent.com/105135920/169382408-c441e824-1251-41f1-8941-08841d5dfdc0.png)
 
 ## Uncommon
-![Screenshot_9](https://user-images.githubusercontent.com/105135920/169382240-0985ca64-0175-4bed-82ac-4fc4390d37dc.png)
 
+![Screenshot_9](https://user-images.githubusercontent.com/105135920/169382240-0985ca64-0175-4bed-82ac-4fc4390d37dc.png)
 
 ### Component phases
 
@@ -679,6 +829,7 @@ When a component is removed from the DOM (deleted, etc)
 ###### componentWilUnmount
 
 ## Custom Hooks
+
 > https://reactjs.org/docs/hooks-custom.html
 
 

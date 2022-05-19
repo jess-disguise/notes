@@ -511,7 +511,16 @@ Like a “box” that can hold a mutable value in its `.current` property.
 
 > Refs are primarily used as a way to access the DOM. If you pass a ref object to React with `<div ref={myRef} />`, React will set its `.current` property to the corresponding DOM node whenever that node changes
 
-## Lifecycle Hooks
+# Lifecycle 
+
+[Lifecycle Diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+
+## Common
+![Screenshot_10](https://user-images.githubusercontent.com/105135920/169382408-c441e824-1251-41f1-8941-08841d5dfdc0.png)
+
+## Uncommon
+![Screenshot_9](https://user-images.githubusercontent.com/105135920/169382240-0985ca64-0175-4bed-82ac-4fc4390d37dc.png)
+
 
 ### Component phases
 

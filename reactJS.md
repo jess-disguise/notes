@@ -320,6 +320,7 @@ An event fired from inside a portal will propagate to ancestors in the containin
 not ancestors in the DOM tree
 
 For example:
+A component in `#app-root` would be able to catch an event from the sibling node `#modal-root`
 
 ```html
 
@@ -330,8 +331,6 @@ For example:
 </body>
 </html>
 ```
-
-A Parent component in `#app-root` would be able to catch an uncaught, bubbling event from the sibling node `#modal-root`
 
 ```jsx
 // These two containers are siblings in the DOM
@@ -345,14 +344,18 @@ class Modal extends React.Component {
     }
 
     componentDidMount() {
-        /* The portal element is inserted in the DOM tree after
+        /* 
+        The portal element is inserted in the DOM tree after
         the Modal's children are mounted, meaning that children
-        will be mounted on a detached DOM node. If a child
-        component requires to be attached to the DOM tree
-        immediately when mounted, for example to measure a
-        DOM node, or uses 'autoFocus' in a descendant, add
-        state to Modal and only render the children when Modal
-        is inserted in the DOM tree. */
+        will be mounted on a detached DOM node.
+         
+        If a child component requires to be attached to the 
+        DOM tree immediately when mounted (e.g., to measure a
+        DOM node) or uses 'autoFocus' in a descendant,
+        
+        add state to Modal and only render the children 
+        when Modal is inserted in the DOM tree. 
+        */
         modalRoot.appendChild(this.el);
     }
 
@@ -395,7 +398,7 @@ class Parent extends React.Component {
 }
 
 function Child() {
-    // The click event on this button will bubble up to parent,  
+    // The click event on this button will bubble up to the parent,  
     // because there is no 'onClick' attribute defined  
     return (
         <div className="modal">
@@ -832,6 +835,254 @@ When a component is removed from the DOM (deleted, etc)
 
 > https://reactjs.org/docs/hooks-custom.html
 
+
+
+--
+
+# Refs -- `useRef`
+
+> https://reactjs.org/docs/refs-and-the-dom.html
+> https://reactjs.org/docs/forwarding-refs.html
+
+A way to connect an HTML element to JS code. (access DOM nodes or React elements created in the render method). Commonly assigned to an instance property when a component is constructed, so they can be referenced throughout the component
+
+- Created using `React.createRef()` or `useRef()`
+- Attached to React elements via the `ref` attribute, with a value of the name defined for that `useRef`
+- **Does not trigger a re-render**
+- Takes argument of default initial value
+- Returns an object containing a reference to the DOM node that allows us to work with the element later
+    - Access the DOM node with `.current` on the returned object
+    - But this can differ depending on the type of the node:
+      - > When the `ref` attribute is used on an HTML element, the ref created in the constructor with `React.createRef()` receives the underlying DOM element as its `current` property.
+        >
+        > When the `ref` attribute is used on a custom class component, the ref object receives the mounted instance of the component as its `current` property. 
+        > 
+        > You may not use the `ref` attribute on function components because they don’t have instances.
+
+### Quick Example
+```jsx
+// inside functional component...
+
+// default to undefined
+const nameInputRef = useRef();
+const ageInputRef = useRef();
+
+// ...etc...
+
+return (
+    <input
+        id="username"
+        type="text"
+        value={enteredUsername}
+        ref={nameInputRef}
+    />
+);
+
+// Print the DOM node to the log
+console.log(nameInputRef.current);
+
+// Print the value of the input element to the log
+console.log(nameInputRef.current.value);
+```
+
+**Use ref when**:
+
+- Managing focus, text selection, or media playback
+- Triggering imperative animations
+- Integrating with third-party DOM libraries
+- etc
+
+**Don't use ref when** you can do something declaratively.  
+For example, instead of exposing `open()` and `close()` methods on a `Dialog` component, pass an `isOpen` prop to it
+
+### Detailed Example
+
+If we want to save the username as it is entered into a form, we don't need to update after every keystroke, so `useState()` would be wasteful.
+
+```jsx
+// importing useState hook
+import React, {useState} from 'react';
+
+import Card from '../UI/Card';
+import Button from '../UI/Button';
+import ErrorModal from '../UI/ErrorModal';
+import classes from './AddUser.module.css';
+
+const AddUser = (props) => {
+    // useState will cause the component to re-render every time 
+    // the input changes (as the user types)
+    const [enteredUsername, setEnteredUsername] = useState('');
+    const [enteredAge, setEnteredAge] = useState('');
+    const [error, setError] = useState();
+
+    const addUserHandler = (event) => {
+        event.preventDefault();
+
+        if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+            setError({
+                title: 'Invalid input',
+                message: 'Please enter a valid name and age (non-empty values).',
+            });
+            return;
+        }
+        if (+enteredAge < 1) {
+            setError({
+                title: 'Invalid age',
+                message: 'Please enter a valid age (> 0).',
+            });
+            return;
+        }
+
+        props.onAddUser(enteredUsername, enteredAge);
+        setEnteredUsername('');
+        setEnteredAge('');
+    };
+
+    const usernameChangeHandler = (event) => {
+        setEnteredUsername(event.target.value);
+    };
+
+    const ageChangeHandler = (event) => {
+        setEnteredAge(event.target.value);
+    };
+
+    const errorHandler = () => {
+        setError(null);
+    };
+
+    return (
+        <div>
+            {error && (
+                <ErrorModal
+                    title={error.title}
+                    message={error.message}
+                    onConfirm={errorHandler}
+                />
+            )}
+            <Card className={classes.input}>
+                <form onSubmit={addUserHandler}>
+                    <label htmlFor="username">Username</label>
+                    <input
+                        id="username"
+                        type="text"
+                        value={enteredUsername}
+                        onChange={usernameChangeHandler}
+                    />
+                    <label htmlFor="age">Age (Years)</label>
+                    <input
+                        id="age"
+                        type="number"
+                        value={enteredAge}
+                        onChange={ageChangeHandler}
+                    />
+                    <Button type="submit">Add User</Button>
+                </form>
+            </Card>
+        </div>
+    );
+}
+```
+
+```jsx
+// import useRef hook as well
+import React, {useState, useRef} from 'react';
+
+// ...etc
+
+const AddUser = (props) => {
+    // default to undefined
+    const nameInputRef = useRef();
+    const ageInputRef = useRef();
+    
+    // no longer need name & age states because we are 
+    // using the refs to get values instead
+    const [error, setError] = useState();
+
+    const addUserHandler = (event) => {
+        event.preventDefault();
+        
+        // use refs to set values instead
+        const enteredUsername = nameInputRef.current.value;  
+        const enteredAge = ageInputRef.current.value;  
+      
+        if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+            setError({
+                title: 'Invalid input',
+                message: 'Please enter a valid name and age (non-empty values).',
+            });
+            return;
+        }
+        if (+enteredAge < 1) {
+            setError({
+                title: 'Invalid age',
+                message: 'Please enter a valid age (> 0).',
+            });
+            return;
+        }
+
+        props.onAddUser(enteredUsername, enteredAge);
+        
+        // Reset state
+            // DON'T normally edit DOM directly like this
+            // but is small and simple to reset what the user entered
+            // Another option is to retain some of the useState() functionality
+        nameInputRef.current.value = '';
+        ageInputRef.current.value = '';
+    };
+    
+    // don't need name or age event handlers now
+
+    const errorHandler = () => {
+        setError(null);
+    };
+
+    return (
+        <div>
+            {error && (
+                <ErrorModal
+                    title={error.title}
+                    message={error.message}
+                    onConfirm={errorHandler}
+                />
+            )}
+            <Card className={classes.input}>
+                <form onSubmit={addUserHandler}>
+                    <label htmlFor="username">Username</label>
+                    <input
+                        id="username"
+                        type="text"
+                        // no longer need value="" or onChange=""
+                        ref={nameInputRef}
+                    />
+                    <label htmlFor="age">Age (Years)</label>
+                    <input
+                        id="age"
+                        type="number"
+                        // no longer need value="" or onChange=""
+                        ref={ageInputRef}
+                    />
+                    <Button type="submit">Add User</Button>
+                </form>
+            </Card>
+        </div>
+    );
+}
+```
+
+### Example (Class)
+
+```jsx
+class MyComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.myRef = React.createRef();
+    }
+
+    render() {
+        return <div ref={this.myRef}/>;
+    }
+}
+```
 
 ---
 

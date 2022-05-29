@@ -540,6 +540,31 @@ var newPlayer = Object.assign({}, player, {score: 2});
 - Don't work inside classes
 - There are built-in hooks and you can write your own
 
+## Quick Ref
+#### Basic Hooks
+
+| Hook                        | Description                                                                                                                                                |
+|:----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `useState(initialState)`    | replaces the old state with the new state instead of merging them                                                                                          |
+| `useEffect(() => { ... })`  | By default, runs the after every render — including the first render                                                                                       |
+| `useContext(MyContext)`     | value returned from `React.createContext` as determined by the `value` prop of the nearest `<MyContext.Provider>` above the calling component in the tree  |
+
+> [Basic Hooks](https://reactjs.org/docs/hooks-reference.html#basic-hooks)
+
+#### Additional Hooks
+| Hook                                       | Description                                                                                                                                                                                                         |
+|:-------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `useRef(initialValue)`                     | A way to access DOM nodes or React elements. Attach DOM nodes to React elements via the `ref` attribute. Access the DOM node with `.current` on the returned object                                                 |
+| `useMemo(() => { ... })`                   | Returns a memoized value (~cached) for performance optimization. Function passed to `useMemo` runs during rendering.                                                                                                |
+| `useReducer(reducer, initialArg, init)`    | An alternative to `useState`. Accepts a `reducer` of `(state, action) => newState` and returns the current state paired with a `dispatch` method                                                                    |
+| `useCallback(() => { ... })`               | Pass an inline callback and an array of dependencies. Returns a memoized callback that only changes if one of the dependencies has changed. <br/>`useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)` |
+| `useLayoutEffect`                          | identical to `useEffect`, but it fires synchronously after all DOM changes                                                                                                                                          |
+| `useImperativeHandle(ref, () => { ... })`  |                                                                                                                                                                                                                     |
+| `useDebugValue(value)`                     | display a label for custom hooks in React DevTools                                                                                                                                                                  |
+
+Full details: [Additional Hooks](https://reactjs.org/docs/hooks-reference.html#additional-hooks)
+
+
 ## Hook Rules
 
 > https://reactjs.org/docs/hooks-rules.html
@@ -556,7 +581,12 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 > https://reactjs.org/docs/hooks-state.html
 
-`useState` returns a pair: the **current state value** and **a function** that lets you update it. React will preserve the state between re-renders.
+`useState` lets you add React state to function components, since they don't have `this` or `this.state`. React will preserve the state between re-renders.
+
+`useState` returns a pair: 
+  - the **current state value** and 
+  - **a function** that lets you update it. 
+
 
 ```jsx
 // Declare a new state variable "count"

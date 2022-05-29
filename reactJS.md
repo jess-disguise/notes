@@ -556,8 +556,7 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 > https://reactjs.org/docs/hooks-state.html
 
-`useState` returns a pair: the **current state value** and **a function** that lets you update it. React will preserve
-the state between re-renders.
+`useState` returns a pair: the **current state value** and **a function** that lets you update it. React will preserve the state between re-renders.
 
 ```jsx
 // Declare a new state variable "count"
@@ -747,99 +746,7 @@ function FriendStatus(props) {
 }
 ```
 
-## Ref Hook -- `useRef`
-
-> https://reactjs.org/docs/hooks-reference.html#useref
-
-Like a “box” that can hold a mutable value in its `.current` property.
-
-- Returns a mutable `ref` object whose `.current` property is initialized to the passed argument (`initialValue`)
-- `useRef` **doesn't notify you when its content changes**.
-    - Mutating the `.current` property doesn't trigger a re-render
-- The returned object will persist for the full lifetime of the component
-- A common use case is to access a child imperatively
-- Good for keeping any mutable value around similar to how you'd use instance fields in classes
-- Creates a plain JavaScript object
-    - The only difference between `useRef()` and creating a `{current: ...}` object is that `useRef` will give you the
-      same ref object on every render
-
-> Refs are primarily used as a way to access the DOM. If you pass a ref object to React with `<div ref={myRef} />`,
-> React will set its `.current` property to the corresponding DOM node whenever that node changes
-
-A common use case is to access a child imperatively:
-
-```jsx
-function TextInputWithFocusButton() {
-    const inputEl = useRef(null);
-    const onButtonClick = () => {
-        // `current` points to the mounted text input element
-        inputEl.current.focus();
-    };
-    return (
-        <>
-            <input ref={inputEl} type="text"/>
-            <button onClick={onButtonClick}>Focus the input</button>
-        </>
-    );
-```
-
-# Lifecycle
-
-[Lifecycle Diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
-
-## Common
-
-![Screenshot_10](https://user-images.githubusercontent.com/105135920/169382408-c441e824-1251-41f1-8941-08841d5dfdc0.png)
-
-## Uncommon
-
-![Screenshot_9](https://user-images.githubusercontent.com/105135920/169382240-0985ca64-0175-4bed-82ac-4fc4390d37dc.png)
-
-### Component phases
-
-#### 1. Mounting
-
-When an instance of a component is created and inserted into the DOM.
-
-Special methods that are automatically called during these phases/events are **lifecycle hooks**
-
-##### Mounting Methods
-
-###### constructor
-
-###### render
-
-###### componentDidMount
-
-#### 2. Update
-
-Change the state of the component or give it new props
-
-##### Update Methods
-
-Called in order
-
-###### render
-
-###### componentDidMount
-
-### 3. Unmount
-
-When a component is removed from the DOM (deleted, etc)
-
-##### Unmount Methods
-
-###### componentWilUnmount
-
-## Custom Hooks
-
-> https://reactjs.org/docs/hooks-custom.html
-
-
-
---
-
-# Refs -- `useRef`
+# Ref Hook -- `useRef`
 
 > https://reactjs.org/docs/refs-and-the-dom.html
 > https://reactjs.org/docs/forwarding-refs.html
@@ -851,13 +758,18 @@ A way to connect an HTML element to JS code. (access DOM nodes or React elements
 - **Does not trigger a re-render**
 - Takes argument of default initial value
 - Returns an object containing a reference to the DOM node that allows us to work with the element later
-    - Access the DOM node with `.current` on the returned object
-    - But this can differ depending on the type of the node:
-      - > When the `ref` attribute is used on an HTML element, the ref created in the constructor with `React.createRef()` receives the underlying DOM element as its `current` property.
-        >
-        > When the `ref` attribute is used on a custom class component, the ref object receives the mounted instance of the component as its `current` property. 
-        > 
-        > You may not use the `ref` attribute on function components because they don’t have instances.
+  - Access the DOM node with `.current` on the returned object
+  - But this can differ depending on the type of the node:
+    - > When the `ref` attribute is used on an HTML element, the ref created in the constructor with `React.createRef()` receives the underlying DOM element as its `current` property.
+      >
+      > When the `ref` attribute is used on a custom class component, the ref object receives the mounted instance of the component as its `current` property.
+      >
+      > You may not use the `ref` attribute on function components because they don’t have instances.
+
+> Refs are primarily used as a way to access the DOM. If you pass a ref object to React with `<div ref={myRef} />`,
+> React will set its `.current` property to the corresponding DOM node whenever that node changes.
+>
+> The only difference between `useRef()` and creating a `{current: ...}` object is that `useRef` will give you the same ref object on every render
 
 ### Quick Example
 ```jsx
@@ -1083,6 +995,63 @@ class MyComponent extends React.Component {
     }
 }
 ```
+
+## Custom Hooks
+
+> https://reactjs.org/docs/hooks-custom.html
+
+ 
+---
+
+
+# Lifecycle
+
+[Lifecycle Diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+
+## Common
+
+![Screenshot_10](https://user-images.githubusercontent.com/105135920/169382408-c441e824-1251-41f1-8941-08841d5dfdc0.png)
+
+## Uncommon
+
+![Screenshot_9](https://user-images.githubusercontent.com/105135920/169382240-0985ca64-0175-4bed-82ac-4fc4390d37dc.png)
+
+### Component phases
+
+#### 1. Mounting
+
+When an instance of a component is created and inserted into the DOM.
+
+Special methods that are automatically called during these phases/events are **lifecycle hooks**
+
+##### Mounting Methods
+
+###### constructor
+
+###### render
+
+###### componentDidMount
+
+#### 2. Update
+
+Change the state of the component or give it new props
+
+##### Update Methods
+
+Called in order
+
+###### render
+
+###### componentDidMount
+
+### 3. Unmount
+
+When a component is removed from the DOM (deleted, etc)
+
+##### Unmount Methods
+
+###### componentWilUnmount
+
 
 ---
 

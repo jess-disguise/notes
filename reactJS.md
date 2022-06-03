@@ -62,24 +62,24 @@ npm run build
 
 ```js
 class ShoppingList extends React.Component {
-    /**
-     * Returns a description (React element, JSX) of what you want to see on the screen.
-     *
-     * @returns {JSX.Element}
-     */
-    render() {
-        return (
+  /**
+   * Returns a description (React element, JSX) of what you want to see on the screen.
+   *
+   * @returns {JSX.Element}
+   */
+  render() {
+    return (
             // The <div /> syntax is transformed at build time to React.createElement('div')
             <div className="shopping-list">
-                <h1>Shopping List for {this.props.name}</h1>
-                <ul>
-                    <li>Instagram</li>
-                    <li>WhatsApp</li>
-                    <li>Oculus</li>
-                </ul>
+              <h1>Shopping List for {this.props.name}</h1>
+              <ul>
+                <li>Instagram</li>
+                <li>WhatsApp</li>
+                <li>Oculus</li>
+              </ul>
             </div>
-        );
-    }
+    );
+  }
 }
 
 // Example usage: <ShoppingList name="Mark" />
@@ -89,8 +89,8 @@ The example above is equivalent to:
 
 ```js
 return React.createElement('div', {className: 'shopping-list'},
-    React.createElement('h1', /* ... h1 children ... */),
-    React.createElement('ul', /* ... ul children ... */)
+        React.createElement('h1', /* ... h1 children ... */),
+        React.createElement('ul', /* ... ul children ... */)
 );
 ```
 
@@ -111,25 +111,25 @@ As Component class:
  * renders a single tic-tac-toe square as a <button>
  */
 class Square extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             <button
-                className="square"
-                onClick={() => {
-                    /* 
-                    This event handler calls this.props.onClick()
-                    Since the Board passed onClick={() => this.handleClick(i)} to Square,
-                         the Square calls the Board's handleClick(i) when clicked
-                    In React terms, the Square components are now controlled components;
-                         the Board has full control over them
-                    */
-                    this.props.onClick({value: 'X'})
-                }}
+                    className="square"
+                    onClick={() => {
+                      /* 
+                      This event handler calls this.props.onClick()
+                      Since the Board passed onClick={() => this.handleClick(i)} to Square,
+                           the Square calls the Board's handleClick(i) when clicked
+                      In React terms, the Square components are now controlled components;
+                           the Board has full control over them
+                      */
+                      this.props.onClick({value: 'X'})
+                    }}
             >
-                {this.props.value}
+              {this.props.value}
             </button>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -140,13 +140,13 @@ As Function component:
  * renders a single tic-tac-toe square as a <button>
  */
 function Square(props) {
-    return (
-        <button className="square" onClick={() => {
+  return (
+          <button className="square" onClick={() => {
             props.onClick()
-        }}>
+          }}>
             {props.value}
-        </button>
-    );
+          </button>
+  );
 }
 ```
 
@@ -192,15 +192,15 @@ Avoid unnecessary wrapper HTML with React Fragments
 import React from 'react';
 
 class Table extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             <table>
-                <tr>
-                    <Columns/>
-                </tr>
+              <tr>
+                <Columns/>
+              </tr>
             </table>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -209,15 +209,15 @@ class Table extends React.Component {
 ```jsx
 // WRONG
 class Columns extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             // useless div element
             <div>
-                <td>Hello</td>
-                <td>World</td>
+              <td>Hello</td>
+              <td>World</td>
             </div>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -228,14 +228,14 @@ Avoid unnecessary wrapper HTML
 ```jsx
 // Good
 class Columns extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             <React.Fragment>
-                <td>Hello</td>
-                <td>World</td>
+              <td>Hello</td>
+              <td>World</td>
             </React.Fragment>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -245,14 +245,14 @@ class Columns extends React.Component {
 import React, {Fragment} from 'react';
 
 class Columns extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             <Fragment>
-                <td>Hello</td>
-                <td>World</td>
+              <td>Hello</td>
+              <td>World</td>
             </Fragment>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -260,14 +260,14 @@ Empty tag to indicate a fragment works too
 
 ```jsx
 class Columns extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             <>
-                <td>Hello</td>
-                <td>World</td>
+              <td>Hello</td>
+              <td>World</td>
             </>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -275,17 +275,17 @@ class Columns extends React.Component {
 
 ```jsx
 function Glossary(props) {
-    return (
-        <dl>
+  return (
+          <dl>
             {props.items.map(item => (
-                // Without the `key`, React will fire a key warning
-                <React.Fragment key={item.id}>
-                    <dt>{item.term}</dt>
-                    <dd>{item.description}</dd>
-                </React.Fragment>
+                    // Without the `key`, React will fire a key warning
+                    <React.Fragment key={item.id}>
+                      <dt>{item.term}</dt>
+                      <dd>{item.description}</dd>
+                    </React.Fragment>
             ))}
-        </dl>
-    );
+          </dl>
+  );
 }
 ```
 
@@ -298,9 +298,9 @@ function Glossary(props) {
 `ReactDOM.createPortal(child, container)`
 
 - A way to render children into a DOM node that exists outside the DOM hierarchy of the parent component
-    - For example, modals, pop-ups, and other overlays
+  - For example, modals, pop-ups, and other overlays
 - Behaves like a normal React child
-    - The portal still exists in the React tree regardless of position in the DOM tree
+  - The portal still exists in the React tree regardless of position in the DOM tree
 - [Managing keyboard focus](https://reactjs.org/docs/accessibility.html#programmatically-managing-focus) becomes very
   important
 - Don't forget accessibility: https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal
@@ -308,11 +308,11 @@ function Glossary(props) {
 ```jsx
 render()
 {
-    // React does *not* create a new div. It renders the children into `domNode`.
-    // `domNode` is any valid DOM node, regardless of its location in the DOM.
-    return ReactDOM.createPortal(
-        this.props.children,
-        domNode);
+  // React does *not* create a new div. It renders the children into `domNode`.
+  // `domNode` is any valid DOM node, regardless of its location in the DOM.
+  return ReactDOM.createPortal(
+          this.props.children,
+          domNode);
 }
 ```
 
@@ -338,73 +338,73 @@ const appRoot = document.getElementById('app-root');
 const modalRoot = document.getElementById('modal-root');
 
 class Modal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.el = document.createElement('div');
-    }
+  constructor(props) {
+    super(props);
+    this.el = document.createElement('div');
+  }
 
-    componentDidMount() {
-        /* 
-        The portal element is inserted in the DOM tree after
-        the Modal's children are mounted, meaning that children
-        will be mounted on a detached DOM node.
-         
-        If a child component requires to be attached to the 
-        DOM tree immediately when mounted (e.g., to measure a
-        DOM node) or uses 'autoFocus' in a descendant,
-        
-        add state to Modal and only render the children 
-        when Modal is inserted in the DOM tree. 
-        */
-        modalRoot.appendChild(this.el);
-    }
+  componentDidMount() {
+    /* 
+    The portal element is inserted in the DOM tree after
+    the Modal's children are mounted, meaning that children
+    will be mounted on a detached DOM node.
+     
+    If a child component requires to be attached to the 
+    DOM tree immediately when mounted (e.g., to measure a
+    DOM node) or uses 'autoFocus' in a descendant,
+    
+    add state to Modal and only render the children 
+    when Modal is inserted in the DOM tree. 
+    */
+    modalRoot.appendChild(this.el);
+  }
 
-    componentWillUnmount() {
-        modalRoot.removeChild(this.el);
-    }
+  componentWillUnmount() {
+    modalRoot.removeChild(this.el);
+  }
 
-    render() {
-        return ReactDOM.createPortal(this.props.children, this.el);
-    }
+  render() {
+    return ReactDOM.createPortal(this.props.children, this.el);
+  }
 }
 
 class Parent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {clicks: 0};
-        this.handleClick = this.handleClick.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {clicks: 0};
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-    handleClick() {
-        // This will fire when the button in Child is clicked,    
-        // updating Parent's state, even though button    
-        // is not direct descendant in the DOM.    
-        this.setState(state => ({clicks: state.clicks + 1}));
-    }
+  handleClick() {
+    // This will fire when the button in Child is clicked,    
+    // updating Parent's state, even though button    
+    // is not direct descendant in the DOM.    
+    this.setState(state => ({clicks: state.clicks + 1}));
+  }
 
-    render() {
-        return (
+  render() {
+    return (
             <div onClick={this.handleClick}>
-                <p>Number of clicks: {this.state.clicks}</p>
-                <p>
-                    Open up the browser DevTools
-                    to observe that the button
-                    is not a child of the div
-                    with the onClick handler.
-                </p>
-                <Modal> <Child/> </Modal></div>
-        );
-    }
+              <p>Number of clicks: {this.state.clicks}</p>
+              <p>
+                Open up the browser DevTools
+                to observe that the button
+                is not a child of the div
+                with the onClick handler.
+              </p>
+              <Modal> <Child/> </Modal></div>
+    );
+  }
 }
 
 function Child() {
-    // The click event on this button will bubble up to the parent,  
-    // because there is no 'onClick' attribute defined  
-    return (
-        <div className="modal">
+  // The click event on this button will bubble up to the parent,  
+  // because there is no 'onClick' attribute defined  
+  return (
+          <div className="modal">
             <button>Click</button>
-        </div>
-    );
+          </div>
+  );
 }
 
 const root = ReactDOM.createRoot(appRoot);
@@ -423,13 +423,13 @@ React components can have state by setting `this.state `in their constructors.
 
 ```js
 class Square extends React.Component {
-    constructor(props) {
-        super(props);
-        // initialize the state of the component
-        this.state = {
-            value: null,
-        };
-    }
+  constructor(props) {
+    super(props);
+    // initialize the state of the component
+    this.state = {
+      value: null,
+    };
+  }
 }
 ```
 
@@ -440,62 +440,62 @@ It's often preferable to move state into the parent:
  * renders 9 tic-tac-toe squares
  */
 class Board extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            // save state of the squares and init with null value
-            squares: Array(9).fill(null),
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      // save state of the squares and init with null value
+      squares: Array(9).fill(null),
+    };
+  }
 
-    /**
-     * render a square element
-     *
-     * @param i
-     * @returns {JSX.Element}
-     */
-    renderSquare(i) {
-        return <Square
+  /**
+   * render a square element
+   *
+   * @param i
+   * @returns {JSX.Element}
+   */
+  renderSquare(i) {
+    return <Square
             value={this.state.squares[i]}
             /* Since the Board passes onClick={() => this.handleClick(i)} to Square,
             the Square onClick calls the Board's handleClick(i) when clicked */
             onClick={() => this.handleClick(i)}
-        />;
-    }
+    />;
+  }
 
-    handleClick(i) {
-        // create a copy of the squares array
-        const squares = this.state.squares.slice();
-        squares[i] = 'X';
-        this.setState({squares: squares});
-    }
+  handleClick(i) {
+    // create a copy of the squares array
+    const squares = this.state.squares.slice();
+    squares[i] = 'X';
+    this.setState({squares: squares});
+  }
 
-    // etc..
+  // etc..
 }
 
 /**
  * renders a single tic-tac-toe square as a <button>
  */
 class Square extends React.Component {
-    render() {
-        return (
+  render() {
+    return (
             <button
-                className="square"
-                onClick={() => {
-                    /* 
-                    This event handler calls this.props.onClick()
-                    Since the Board passed onClick={() => this.handleClick(i)} to Square,
-                         the Square calls the Board's handleClick(i) when clicked
-                    In React terms, the Square components are now controlled components;
-                         the Board has full control over them
-                    */
-                    this.props.onClick({value: 'X'})
-                }}
+                    className="square"
+                    onClick={() => {
+                      /* 
+                      This event handler calls this.props.onClick()
+                      Since the Board passed onClick={() => this.handleClick(i)} to Square,
+                           the Square calls the Board's handleClick(i) when clicked
+                      In React terms, the Square components are now controlled components;
+                           the Board has full control over them
+                      */
+                      this.props.onClick({value: 'X'})
+                    }}
             >
-                {this.props.value}
+              {this.props.value}
             </button>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -558,6 +558,7 @@ var newPlayer = Object.assign({}, player, {score: 2});
 | `useMemo(() => { ... })`                   | Returns a memoized value (~cached) for performance optimization. Function passed to `useMemo` runs during rendering.                                                                                                |
 | `useReducer(reducer, initialArg, init)`    | An alternative to `useState`. Accepts a `reducer` of `(state, action) => newState` and returns the current state paired with a `dispatch` method                                                                    |
 | `useCallback(() => { ... })`               | Pass an inline callback and an array of dependencies. Returns a memoized callback that only changes if one of the dependencies has changed. <br/>`useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)` |
+| `useDispatch`                              | (REDUX) returns a reference to the dispatch function from the Redux store. You may use it to dispatch actions as needed |
 | `useLayoutEffect`                          | identical to `useEffect`, but it fires synchronously after all DOM changes                                                                                                                                          |
 | `useImperativeHandle(ref, () => { ... })`  |                                                                                                                                                                                                                     |
 | `useDebugValue(value)`                     | display a label for custom hooks in React DevTools                                                                                                                                                                  |
@@ -570,10 +571,10 @@ Full details: [Additional Hooks](https://reactjs.org/docs/hooks-reference.html#a
 > https://reactjs.org/docs/hooks-rules.html
 
 - Only call Hooks at the **top level**
-    - Don't call Hooks inside loops, conditions, or nested functions.
+  - Don't call Hooks inside loops, conditions, or nested functions.
 - Only call Hooks **from React function components**
-    - Don't call Hooks from regular JavaScript functions.
-    - You can call Hooks from your own custom Hooks
+  - Don't call Hooks from regular JavaScript functions.
+  - You can call Hooks from your own custom Hooks
 
 > Plugin to enforce these rules for you: `npm install eslint-plugin-react-hooks --save-dev`
 
@@ -583,9 +584,9 @@ Full details: [Additional Hooks](https://reactjs.org/docs/hooks-reference.html#a
 
 `useState` lets you add React state to function components, since they don't have `this` or `this.state`. React will preserve the state between re-renders.
 
-`useState` returns a pair: 
-  - the **current state value** and 
-  - **a function** that lets you update it. 
+`useState` returns a pair:
+- the **current state value** and
+- **a function** that lets you update it.
 
 
 ```jsx
@@ -628,17 +629,17 @@ function Example() {
 > https://reactjs.org/docs/hooks-effect.html
 
 - Lets you perform side effects in function components:
-    - data fetching
-    - setting up a subscription
-    - manually changing the DOM
-    - etc
+  - data fetching
+  - setting up a subscription
+  - manually changing the DOM
+  - etc
 - By default, `useEffect` **runs after the first render and after every update**
-    - [Customize when it's run](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects)
+  - [Customize when it's run](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects)
 - Essentially a combination of the lifecycle hooks `componentDidMount`, `componentDidUpdate` and `componentWillUnmount`
 - Unlike `componentDidMount` or `componentDidUpdate`, effects scheduled with `useEffect` don't block the browser from
   updating the screen
-    - If they do need to happen synchronously (i.e., measuring the layout), there is a separate `useLayoutEffect` Hook
-      with identical API
+  - If they do need to happen synchronously (i.e., measuring the layout), there is a separate `useLayoutEffect` Hook
+    with identical API
 - Side effects in React components may or may not require cleanup
 
 ```jsx
@@ -666,10 +667,10 @@ function Example() {
 ### Effects Without Cleanup
 
 - Run some additional code after React has updated the DOM
-    - Network requests
-    - manual DOM mutations
-    - logging
-    - etc
+  - Network requests
+  - manual DOM mutations
+  - logging
+  - etc
 - Don't need any clean up because we can run them and immediately forget about them
 
 #### Example (Class)
@@ -737,9 +738,9 @@ function Example() {
 - Set up a subscription to some external data source
 - It is important to clean up so that we don't introduce a memory leak
 - Cleanup runs when:
-    - the component unmounts
-    - before running the effects next time
-        - [how to opt out of this](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects)
+  - the component unmounts
+  - before running the effects next time
+    - [how to opt out of this](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects)
 
 #### Example (Class)
 
@@ -1025,6 +1026,98 @@ class MyComponent extends React.Component {
     }
 }
 ```
+
+## `useDispatch` (Redux)
+
+> https://react-redux.js.org/api/hooks#usedispatch
+
+- Returns a reference to the `dispatch` function from the Redux store.
+- Use to dispatch actions
+
+### Exmaple
+```jsx
+import React from 'react'
+import { useDispatch } from 'react-redux'
+
+export const CounterComponent = ({ value }) => {
+  const dispatch = useDispatch()
+
+  return (
+    <div>
+      <span>{value}</span>
+      <button onClick={() => dispatch({ type: 'increment-counter' })}>
+        Increment counter
+      </button>
+    </div>
+  )
+}
+-```
+
+When passing a callback using dispatch to a child component, you may sometimes want to memoize it with useCallback. If the child component is trying to optimize render behavior using React.memo() or similar, this avoids unnecessary rendering of child components due to the changed callback reference.
+
+```jsx
+import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+
+export const CounterComponent = ({ value }) => {
+  const dispatch = useDispatch()
+  const incrementCounter = useCallback(
+    () => dispatch({ type: 'increment-counter' }),
+    [dispatch]
+  )
+
+  return (
+    <div>
+      <span>{value}</span>
+      <MyIncrementButton onIncrement={incrementCounter} />
+    </div>
+  )
+}
+
+export const MyIncrementButton = React.memo(({ onIncrement }) => (
+  <button onClick={onIncrement}>Increment counter</button>
+))
+```
+
+## `useSelector` (Redux)
+
+- Allows you to extract data from the Redux store state using a selector function
+- selector will be called with the entire Redux store state as its only argument
+- selector will be run whenever the function component renders
+  - unless its reference hasn't changed since a previous render
+- `useSelector()` will also subscribe to the Redux store, and run your selector whenever an action is dispatched
+
+### Examples
+
+#### Basic
+
+```jsx
+import React from 'react'
+import { useSelector } from 'react-redux'
+
+export const CounterComponent = () => {
+  const counter = useSelector((state) => state.counter)
+  return <div>{counter}</div>
+}
+```
+
+Using props via closure to determine what to extract:
+
+```jsx
+import React from 'react'
+import { useSelector } from 'react-redux'
+
+export const TodoListItem = (props) => {
+  const todo = useSelector((state) => state.todos[props.id])
+  return <div>{todo.text}</div>
+}
+```
+
+#### Using memoizing selectors
+> https://react-redux.js.org/api/hooks#using-memoizing-selectors
+
+
+
 
 ## Custom Hooks
 

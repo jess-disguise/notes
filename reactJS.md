@@ -547,7 +547,7 @@ var newPlayer = Object.assign({}, player, {score: 2});
 |:----------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `useState(initialState)`    | replaces the old state with the new state instead of merging them                                                                                          |
 | `useEffect(() => { ... })`  | By default, runs the after every render — including the first render                                                                                       |
-| `useContext(MyContext)`     | value returned from `React.createContext` as determined by the `value` prop of the nearest `<MyContext.Provider>` above the calling component in the tree  |
+| `useContext(MyContext)`     | A way to share values like locale, UI theme, etc, between components without having to explicitly pass a prop through every level of the tree  |
 
 > [Basic Hooks](https://reactjs.org/docs/hooks-reference.html#basic-hooks)
 
@@ -610,17 +610,17 @@ This example renders a counter. When you click the button, it increments the val
 import React, {useState} from 'react';
 
 function Example() {
-    // Declare a new state variable called "count"
-    // 0 is the initial state
-    const [count, setCount] = useState(0);
-    return (
-        <div>
+  // Declare a new state variable called "count"
+  // 0 is the initial state
+  const [count, setCount] = useState(0);
+  return (
+          <div>
             <p>You clicked {count} times</p>
             <button onClick={() => setCount(count + 1)}>
-                Click me
+              Click me
             </button>
-        </div>
-    );
+          </div>
+  );
 }
 ```
 
@@ -646,21 +646,21 @@ function Example() {
 import React, {useState, useEffect} from 'react';
 
 function Example() {
-    const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
-    // Similar to componentDidMount and componentDidUpdate:
-    useEffect(() => {
-        // Update the document title using the browser API
-        document.title = `You clicked ${count} times`;
-    });
-    return (
-        <div>
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `You clicked ${count} times`;
+  });
+  return (
+          <div>
             <p>You clicked {count} times</p>
             <button onClick={() => setCount(count + 1)}>
-                Click me
+              Click me
             </button>
-        </div>
-    );
+          </div>
+  );
 }
 ```
 
@@ -679,31 +679,31 @@ Updates the document title right after React makes changes to the DOM:
 
 ```jsx
 class Example extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: 0
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    };
+  }
 
-    componentDidMount() {
-        document.title = `You clicked ${this.state.count} times`;
-    }
+  componentDidMount() {
+    document.title = `You clicked ${this.state.count} times`;
+  }
 
-    componentDidUpdate() {
-        document.title = `You clicked ${this.state.count} times`;
-    }
+  componentDidUpdate() {
+    document.title = `You clicked ${this.state.count} times`;
+  }
 
-    render() {
-        return (
+  render() {
+    return (
             <div>
-                <p>You clicked {this.state.count} times</p>
-                <button onClick={() => this.setState({count: this.state.count + 1})}>
-                    Click me
-                </button>
+              <p>You clicked {this.state.count} times</p>
+              <button onClick={() => this.setState({count: this.state.count + 1})}>
+                Click me
+              </button>
             </div>
-        );
-    }
+    );
+  }
 }
 ```
 
@@ -715,21 +715,21 @@ Updates the document title right after React makes changes to the DOM:
 import React, {useState, useEffect} from 'react';
 
 function Example() {
-    const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
-    // tell React your component needs to asynchronously do something after render
-    useEffect(() => {
-        document.title = `You clicked ${count} times`;
-    });
+  // tell React your component needs to asynchronously do something after render
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  });
 
-    return (
-        <div>
+  return (
+          <div>
             <p>You clicked {count} times</p>
             <button onClick={() => setCount(count + 1)}>
-                Click me
+              Click me
             </button>
-        </div>
-    );
+          </div>
+  );
 }
 ```
 
@@ -754,26 +754,26 @@ A `ChatAPI` module that lets us subscribe to a friend's online status
 import React, {useState, useEffect} from 'react';
 
 function FriendStatus(props) {
-    const [isOnline, setIsOnline] = useState(null);
+  const [isOnline, setIsOnline] = useState(null);
 
-    // tell React your component needs to asynchronously do something after render
-    useEffect(() => {
-        function handleStatusChange(status) {
-            setIsOnline(status.isOnline);
-        }
-
-        ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
-
-        // return a function that specifies how to clean up after this effect
-        // doesn't have to be a named function
-        return function cleanup() {
-            ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
-        };
-    });
-    if (isOnline === null) {
-        return 'Loading...';
+  // tell React your component needs to asynchronously do something after render
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline);
     }
-    return isOnline ? 'Online' : 'Offline';
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+
+    // return a function that specifies how to clean up after this effect
+    // doesn't have to be a named function
+    return function cleanup() {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+  if (isOnline === null) {
+    return 'Loading...';
+  }
+  return isOnline ? 'Online' : 'Offline';
 }
 ```
 
@@ -813,12 +813,12 @@ const ageInputRef = useRef();
 // ...etc...
 
 return (
-    <input
-        id="username"
-        type="text"
-        value={enteredUsername}
-        ref={nameInputRef}
-    />
+        <input
+                id="username"
+                type="text"
+                value={enteredUsername}
+                ref={nameInputRef}
+        />
 );
 
 // Print the DOM node to the log
@@ -852,77 +852,77 @@ import ErrorModal from '../UI/ErrorModal';
 import classes from './AddUser.module.css';
 
 const AddUser = (props) => {
-    // useState will cause the component to re-render every time 
-    // the input changes (as the user types)
-    const [enteredUsername, setEnteredUsername] = useState('');
-    const [enteredAge, setEnteredAge] = useState('');
-    const [error, setError] = useState();
+  // useState will cause the component to re-render every time 
+  // the input changes (as the user types)
+  const [enteredUsername, setEnteredUsername] = useState('');
+  const [enteredAge, setEnteredAge] = useState('');
+  const [error, setError] = useState();
 
-    const addUserHandler = (event) => {
-        event.preventDefault();
+  const addUserHandler = (event) => {
+    event.preventDefault();
 
-        if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
-            setError({
-                title: 'Invalid input',
-                message: 'Please enter a valid name and age (non-empty values).',
-            });
-            return;
-        }
-        if (+enteredAge < 1) {
-            setError({
-                title: 'Invalid age',
-                message: 'Please enter a valid age (> 0).',
-            });
-            return;
-        }
+    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid name and age (non-empty values).',
+      });
+      return;
+    }
+    if (+enteredAge < 1) {
+      setError({
+        title: 'Invalid age',
+        message: 'Please enter a valid age (> 0).',
+      });
+      return;
+    }
 
-        props.onAddUser(enteredUsername, enteredAge);
-        setEnteredUsername('');
-        setEnteredAge('');
-    };
+    props.onAddUser(enteredUsername, enteredAge);
+    setEnteredUsername('');
+    setEnteredAge('');
+  };
 
-    const usernameChangeHandler = (event) => {
-        setEnteredUsername(event.target.value);
-    };
+  const usernameChangeHandler = (event) => {
+    setEnteredUsername(event.target.value);
+  };
 
-    const ageChangeHandler = (event) => {
-        setEnteredAge(event.target.value);
-    };
+  const ageChangeHandler = (event) => {
+    setEnteredAge(event.target.value);
+  };
 
-    const errorHandler = () => {
-        setError(null);
-    };
+  const errorHandler = () => {
+    setError(null);
+  };
 
-    return (
-        <div>
+  return (
+          <div>
             {error && (
-                <ErrorModal
-                    title={error.title}
-                    message={error.message}
-                    onConfirm={errorHandler}
-                />
+                    <ErrorModal
+                            title={error.title}
+                            message={error.message}
+                            onConfirm={errorHandler}
+                    />
             )}
             <Card className={classes.input}>
-                <form onSubmit={addUserHandler}>
-                    <label htmlFor="username">Username</label>
-                    <input
+              <form onSubmit={addUserHandler}>
+                <label htmlFor="username">Username</label>
+                <input
                         id="username"
                         type="text"
                         value={enteredUsername}
                         onChange={usernameChangeHandler}
-                    />
-                    <label htmlFor="age">Age (Years)</label>
-                    <input
+                />
+                <label htmlFor="age">Age (Years)</label>
+                <input
                         id="age"
                         type="number"
                         value={enteredAge}
                         onChange={ageChangeHandler}
-                    />
-                    <Button type="submit">Add User</Button>
-                </form>
+                />
+                <Button type="submit">Add User</Button>
+              </form>
             </Card>
-        </div>
-    );
+          </div>
+  );
 }
 ```
 
@@ -933,82 +933,82 @@ import React, {useState, useRef} from 'react';
 // ...etc
 
 const AddUser = (props) => {
-    // default to undefined
-    const nameInputRef = useRef();
-    const ageInputRef = useRef();
-    
-    // no longer need name & age states because we are 
-    // using the refs to get values instead
-    const [error, setError] = useState();
+  // default to undefined
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
 
-    const addUserHandler = (event) => {
-        event.preventDefault();
-        
-        // use refs to set values instead
-        const enteredUsername = nameInputRef.current.value;  
-        const enteredAge = ageInputRef.current.value;  
-      
-        if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
-            setError({
-                title: 'Invalid input',
-                message: 'Please enter a valid name and age (non-empty values).',
-            });
-            return;
-        }
-        if (+enteredAge < 1) {
-            setError({
-                title: 'Invalid age',
-                message: 'Please enter a valid age (> 0).',
-            });
-            return;
-        }
+  // no longer need name & age states because we are 
+  // using the refs to get values instead
+  const [error, setError] = useState();
 
-        props.onAddUser(enteredUsername, enteredAge);
-        
-        // Reset state
-            // DON'T normally edit DOM directly like this
-            // but is small and simple to reset what the user entered
-            // Another option is to retain some of the useState() functionality
-        nameInputRef.current.value = '';
-        ageInputRef.current.value = '';
-    };
-    
-    // don't need name or age event handlers now
+  const addUserHandler = (event) => {
+    event.preventDefault();
 
-    const errorHandler = () => {
-        setError(null);
-    };
+    // use refs to set values instead
+    const enteredUsername = nameInputRef.current.value;
+    const enteredAge = ageInputRef.current.value;
 
-    return (
-        <div>
+    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid name and age (non-empty values).',
+      });
+      return;
+    }
+    if (+enteredAge < 1) {
+      setError({
+        title: 'Invalid age',
+        message: 'Please enter a valid age (> 0).',
+      });
+      return;
+    }
+
+    props.onAddUser(enteredUsername, enteredAge);
+
+    // Reset state
+    // DON'T normally edit DOM directly like this
+    // but is small and simple to reset what the user entered
+    // Another option is to retain some of the useState() functionality
+    nameInputRef.current.value = '';
+    ageInputRef.current.value = '';
+  };
+
+  // don't need name or age event handlers now
+
+  const errorHandler = () => {
+    setError(null);
+  };
+
+  return (
+          <div>
             {error && (
-                <ErrorModal
-                    title={error.title}
-                    message={error.message}
-                    onConfirm={errorHandler}
-                />
+                    <ErrorModal
+                            title={error.title}
+                            message={error.message}
+                            onConfirm={errorHandler}
+                    />
             )}
             <Card className={classes.input}>
-                <form onSubmit={addUserHandler}>
-                    <label htmlFor="username">Username</label>
-                    <input
+              <form onSubmit={addUserHandler}>
+                <label htmlFor="username">Username</label>
+                <input
                         id="username"
                         type="text"
                         // no longer need value="" or onChange=""
                         ref={nameInputRef}
-                    />
-                    <label htmlFor="age">Age (Years)</label>
-                    <input
+                />
+                <label htmlFor="age">Age (Years)</label>
+                <input
                         id="age"
                         type="number"
                         // no longer need value="" or onChange=""
                         ref={ageInputRef}
-                    />
-                    <Button type="submit">Add User</Button>
-                </form>
+                />
+                <Button type="submit">Add User</Button>
+              </form>
             </Card>
-        </div>
-    );
+          </div>
+  );
 }
 ```
 
@@ -1016,14 +1016,14 @@ const AddUser = (props) => {
 
 ```jsx
 class MyComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.myRef = React.createRef();
-    }
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
 
-    render() {
-        return <div ref={this.myRef}/>;
-    }
+  render() {
+    return <div ref={this.myRef}/>;
+  }
 }
 ```
 
@@ -1043,12 +1043,12 @@ export const CounterComponent = ({ value }) => {
   const dispatch = useDispatch()
 
   return (
-    <div>
-      <span>{value}</span>
-      <button onClick={() => dispatch({ type: 'increment-counter' })}>
-        Increment counter
-      </button>
-    </div>
+          <div>
+            <span>{value}</span>
+            <button onClick={() => dispatch({ type: 'increment-counter' })}>
+              Increment counter
+            </button>
+          </div>
   )
 }
 -```
@@ -1062,20 +1062,20 @@ import { useDispatch } from 'react-redux'
 export const CounterComponent = ({ value }) => {
   const dispatch = useDispatch()
   const incrementCounter = useCallback(
-    () => dispatch({ type: 'increment-counter' }),
-    [dispatch]
+          () => dispatch({ type: 'increment-counter' }),
+          [dispatch]
   )
 
   return (
-    <div>
-      <span>{value}</span>
-      <MyIncrementButton onIncrement={incrementCounter} />
-    </div>
+          <div>
+            <span>{value}</span>
+            <MyIncrementButton onIncrement={incrementCounter} />
+          </div>
   )
 }
 
 export const MyIncrementButton = React.memo(({ onIncrement }) => (
-  <button onClick={onIncrement}>Increment counter</button>
+        <button onClick={onIncrement}>Increment counter</button>
 ))
 ```
 

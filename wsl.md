@@ -83,3 +83,22 @@ sudo cp php.ini-production php.ini
 # edit ini
 sudo nano php.ini
 ```
+
+# Troubleshooting
+## Node crashes: build failed because process exited too early
+Repeatedly run `free -h` while running `npm start` to watch the memory use
+
+Check available drive space: 
+```sh 
+df -h
+```
+
+1. Try an increase WSL memory allocation
+   - edit or create `.wslconfig` in your User folder (probably `C:\Users\username\.wslconfig`)
+    ```plain
+    [wsl2]
+    memory=4GB   # Limits VM memory in WSL 2 up to 4GB
+    processors=2 # Makes the WSL 2 VM use 2 virtual processors
+    ```
+2. Try adding [swap space](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04)
+ 

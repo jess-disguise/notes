@@ -1,4 +1,4 @@
-# Install 
+# Install
 > https://docs.microsoft.com/en-us/windows/wsl/install
 
 - open windows Terminal (Powershell) **as administrator**
@@ -84,11 +84,44 @@ sudo cp php.ini-production php.ini
 sudo nano php.ini
 ```
 
+## Using PHP via CLI
+Run a single line of php code
+```bash
+php -r "echo 'hi';"
+```
+
+Enter interactive mode for funsies
+```bash
+php -a
+
+php > echo "hi";
+hi
+
+php >  
+```
+
 # Troubleshooting
+
+## Errors about missing PHP curl extension
+```bash
+sudo apt install php8.1-curl
+```
+Alternatively, try updating, checking the package and try installing again
+
+```bash
+apt-get update -y
+
+apt-cache search php8.1-curl
+# output should say `php8.1-curl - CURL module for PHP`
+
+sudo apt install php8.1-curl
+```
+
+
 ## Node crashes: build failed because process exited too early
 Repeatedly run `free -h` while running `npm start` to watch the memory use
 
-Check available drive space: 
+Check available drive space:
 ```sh 
 df -h
 ```

@@ -23,7 +23,7 @@ git config --global init.defaultBranch
 git branch -m main
 ```
 
-### Rename remote and local
+### Rename local when remote has changed
 ```
 git branch -m <old-name> <new-name>
 git fetch origin

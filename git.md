@@ -23,6 +23,14 @@ git config --global init.defaultBranch
 git branch -m main
 ```
 
+### Rename remote and local
+```
+git branch -m <old-name> <new-name>
+git fetch origin
+git branch -u origin/<new-name> <new-name>
+git remote set-head origin -a
+```
+
 ## View tracked branch info
 ```bash
 git branch -vv
